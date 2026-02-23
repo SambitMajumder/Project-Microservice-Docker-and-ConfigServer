@@ -1,0 +1,59 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: "loans"
+  profiles:
+    active:
+      - prod
+      - mysql
+  config:
+    # Move this here so it's always found first!
+    import: "optional:configserver:http://localhost:8071/"
+
+---
+# MySQL Configuration
+spring:
+  config:
+    activate:
+      on-profile: mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/Accounts
+    username: root
+    password: sambitroot
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+---
+# PostgreSQL Configuration
+spring:
+  config:
+    activate:
+      on-profile: postgres
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Accounts
+    username: postgres
+    password: sambitroot
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+---
+# Global Settings
+spring:
+  main:
+    banner-mode: "off"
+
+logging:
+  level:
+    root: warn
+    org.hibernate.SQL: trace
+    org.hibernate.orm.jdbc.bind: trace
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
